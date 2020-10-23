@@ -78,12 +78,12 @@ const resultDisplay=document.querySelector('#count');
 const span=document.querySelector("#seconds")
 const time=document.querySelector(".time")
 
-
+let timeStop
 
 
 start.addEventListener("click",()=>{
 
-
+    clearInterval(timeStop)
 
 
 
@@ -319,7 +319,7 @@ function stopTime(timeStop){
     }
 }
 
-  let timeStop= setInterval(timeCount,1000)
+   timeStop= setInterval(timeCount,1000)
 
 
 
