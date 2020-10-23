@@ -1,0 +1,330 @@
+<!doctype html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="full-screen" content="yes">
+    <meta  charset="utf-8">
+    <style>
+   .grid{
+    display:flex;
+    flex-wrap:wrap;
+    height: 300px;
+    width: 400px;
+    margin:auto
+}
+
+
+
+.start p{
+  border: solid 1px;
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: rgb(131, 74, 131);
+
+}
+
+
+
+.start p:hover{
+    background-color: rgb(163, 124, 163);
+}
+
+
+.result{
+
+    width: 400px;
+    margin: auto;
+    display: flex;
+}
+.result p{
+    text-align: center;
+}
+#time {
+    width: 400px;
+    margin: auto;
+}
+#time p{
+    text-align: center;
+}
+
+
+
+</style>
+</head>
+<body>
+<div class="start">
+    <p>START</p>
+</div>
+<div id="time">
+    <p><h3><span class="time"></span><span id="seconds"></span></h3></p>
+</div>
+
+<div class="result">
+    <p>
+    <h3 id="score"></h3>
+    <h3 id="count"></h3>
+    </p>
+</div>
+
+
+<div class="grid"></div>
+
+<script>
+ let start=document.querySelector('p')
+const h3=document.querySelector('#score')
+const resultDisplay=document.querySelector('#count');
+const span=document.querySelector("#seconds")
+const time=document.querySelector(".time")
+
+
+
+
+start.addEventListener("click",()=>{
+
+
+
+
+
+   start.textContent="RESTART"
+
+
+   time.textContent="Time:"
+   span.textContent="30"
+
+
+
+    h3.textContent="Score:"
+    resultDisplay.textContent="0";
+
+    const grid=document.querySelector(".grid");
+    const image=document.querySelectorAll("img");
+    image.forEach((elem)=>{
+        grid.removeChild(elem)
+    })
+
+
+
+    const cardArray=[
+        {
+            name:'minion',
+            img:'minion.jpg'
+        },
+        {
+            name:'cat',
+            img:'cat.jpg'
+        },
+        {
+            name:'panda',
+            img:'panda.jpg'
+        },
+        {
+            name:'bart',
+            img:'bart.jpg'
+        },
+        {
+            name:'puh',
+            img:'puh.jpg'
+        },
+        {
+            name:'orel',
+            img:'orel.jpg'
+        },
+        {
+            name:'wolf',
+            img:'wolf.png'
+        },
+        {
+            name:'lion',
+            img:'lion.jpg'
+        },
+        {
+            name:'minion',
+            img:'minion.jpg'
+        },
+        {
+            name:'cat',
+            img:'cat.jpg'
+        },
+        {
+            name:'panda',
+            img:'panda.jpg'
+        },
+        {
+            name:'bart',
+            img:'bart.jpg'
+        },
+        {
+            name:'puh',
+            img:'puh.jpg'
+        },
+        {
+            name:'orel',
+            img:'orel.jpg'
+        },
+        {
+            name:'wolf',
+            img:'wolf.png'
+        },
+        {
+            name:'lion',
+            img:'lion.jpg'
+        }
+
+    ];
+
+    cardArray.sort(()=>0.5- Math.random())
+
+
+
+var cardsChosen=[];
+var cardsChosenId=[];
+var cardsWon=[];
+var clearAll=[]
+
+
+function createBoard(){
+   for(let i=0; i<cardArray.length; i++){
+       var card=document.createElement('img');
+       card.setAttribute('src', 'back.jpg');
+       card.setAttribute('data-id', i);
+      card.addEventListener('click', flipcard)
+       grid.appendChild(card);
+   }
+}
+
+function checkForMatch(){
+ var cards=document.querySelectorAll('img');
+ const optionOneId= cardsChosenId[0];
+ const optionTwoId=cardsChosenId[1];
+ if(cardsChosen[0]===cardsChosen[1]){
+    // alert("You find a match!");
+
+     cards[optionOneId].style.opacity=0;
+     cards[optionTwoId].style.opacity=0;
+     console.log(resultDisplay.textContent)
+     resultDisplay.textContent=Number(resultDisplay.textContent)+1
+if(cards[optionOneId].style.opacity==0 && cards[optionOneId].style.opacity==0 )
+     cardsWon.push(cardsChosen);
+
+ }else {
+    cards[optionOneId].setAttribute('src','back.jpg');
+    cards[optionTwoId].setAttribute('src','back.jpg');
+    resultDisplay.textContent=resultDisplay.textContent-1
+  //  alert('Sorry, try again');
+ }
+  cardsChosen=[];
+  cardsChosenId=[];
+ // resultDisplay.textContent=cardsWon.length;
+
+
+ if(cardsWon.length===cardArray.length/2){
+      h3.textContent=""
+     resultDisplay.textContent="Congratulations! You found them all! Your result: "+resultDisplay.textContent;
+      clearInterval(timeStop)
+  }
+
+}
+
+
+function flipcard(){
+    let cards=document.querySelectorAll("img")
+    var cardId=this.getAttribute('data-id');
+
+    if(cards[cardId].style.opacity!=0 || cards[cardId].style.opacity==''){
+     
+        cards[cardId].style.opacity=1
+    }
+    cardsChosen.push(cardArray[cardId].name);
+    cardsChosenId.push(cardId);
+    clearAll.push()
+    this.setAttribute('src', cardArray[cardId].img);
+
+
+
+
+
+    if(cardsChosen.length===2){
+        if(cardsChosenId[0]!=cardsChosenId[1]){
+            if(cards[cardsChosenId[0]].style.opacity==1 && cards[cardsChosenId[1]].style.opacity==1 ){
+                setTimeout(checkForMatch, 200);
+                console.log("Diffrent")
+            }
+            if(cards[cardsChosenId[0]].style.opacity==0 || cards[cardsChosenId[1]].style.opacity==0 ){
+                console.log("Diffrent and one with opacity=0")
+                if(cards[cardsChosenId[0]].style.opacity==0 ) {
+                    cardsChosenId.shift()
+                    cardsChosen.shift()
+                    console.log("shift")
+                }
+                if(cards[cardsChosenId[1]].style.opacity==0 ) {
+                    cardsChosenId.pop()
+                    cardsChosen.pop()
+                    console.log("pop")
+                }
+            }
+
+        }
+        if(cardsChosenId[0]==cardsChosenId[1]){
+
+            if(cards[cardsChosenId[0]].style.opacity==0 && cards[cardsChosenId[1]].style.opacity==0  ){
+                console.log('ghjghjkhk')
+                //cardsChosenId.pop()
+                //cardsChosen.pop()
+                cardsChosenId=[]
+                cardsChosen=[]
+
+            }
+
+             if(cards[cardsChosenId[0]].style.opacity==1 && cards[cardsChosenId[1]].style.opacity==1 ){
+            cardsChosenId.pop()
+            cardsChosen.pop()
+            console.log(cardsChosen)
+            }
+
+        }
+
+
+
+}
+
+
+}
+
+createBoard();
+
+
+
+
+
+function timeCount(){
+    span.textContent=Number(span.textContent)-1
+    stopTime(timeStop)
+}
+
+function stopTime(timeStop){
+    if(span.textContent==='0'){
+        h3.textContent=""
+        time.textContent=""
+        resultDisplay.textContent="You Lose!";
+        span.textContent="Time over!";
+        clearInterval(timeStop)
+        timeStop=null
+        let cards=document.querySelectorAll("img")
+        cards.forEach((card)=>{
+        card.setAttribute('src', '');
+
+        })
+    }
+}
+
+  let timeStop= setInterval(timeCount,1000)
+
+
+
+})
+
+</script>
+</body>
+</html>
